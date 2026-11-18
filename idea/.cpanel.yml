@@ -1,5 +1,0 @@
----
-deployment:
-  tasks:
-    - export DEPLOYPATH=/home2/akashsha/public_html/idea.akashshar.xyz
-    - /bin/cp -R idea/* $DEPLOYPATH/

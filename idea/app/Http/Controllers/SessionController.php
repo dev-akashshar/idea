@@ -1,0 +1,42 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use RegexIterator;
+
+class SessionController extends Controller
+{
+    public function create()
+    {
+        return view('auth.login');
+    }
+
+    public function store(Request $request)
+    {
+        $attributes = $request->validate([
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'password' => ['required', 'string', 'min:8', 'max:16'],
+        ]);
+
+        if (!Auth::attempt($attributes)) {
+            return back()
+                ->withErrors([
+                    'email' => 'Invalid email or password.',
+                ])
+                ->withInput($request->all());
+        }
+
+        $request->session()->regenerate();
+        return redirect()->intended('/')
+            ->with('success', 'You are now logged in.');
+    }
+
+    public function destroy()
+    {
+        Auth::logout();
+
+        return redirect('/');
+    }
+}

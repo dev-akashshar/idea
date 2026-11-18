@@ -1,0 +1,11 @@
+{
+    "mcpServers": {
+        "laravel-boost": {
+            "command": "php",
+            "args": [
+                "D:/Dev_Akash_Sharma/Laravel/new-idea/idea/artisan",
+                "boost:mcp"
+            ]
+        }
+    }
+}
