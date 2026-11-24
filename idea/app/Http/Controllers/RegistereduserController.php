@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Password;
 
 class RegistereduserController extends Controller
 {
@@ -20,7 +19,7 @@ class RegistereduserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'min:3', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')],
-            'password' => ['required', 'string', 'min:8', 'max:16']
+            'password' => ['required', 'string', 'min:8', 'max:16'],
         ]);
 
         $user = User::create([
@@ -30,6 +29,7 @@ class RegistereduserController extends Controller
         ]);
 
         Auth::login($user);
+
         return redirect('/')->with('success', 'Registration complete!');
     }
 }

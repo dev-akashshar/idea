@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use RegexIterator;
 
 class SessionController extends Controller
 {
@@ -20,7 +19,7 @@ class SessionController extends Controller
             'password' => ['required', 'string', 'min:8', 'max:16'],
         ]);
 
-        if (!Auth::attempt($attributes)) {
+        if (! Auth::attempt($attributes)) {
             return back()
                 ->withErrors([
                     'email' => 'Invalid email or password.',
@@ -29,13 +28,17 @@ class SessionController extends Controller
         }
 
         $request->session()->regenerate();
+
         return redirect()->intended('/')
             ->with('success', 'You are now logged in.');
     }
 
-    public function destroy()
+    public function destroy(Request $request)
     {
         Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return redirect('/');
     }

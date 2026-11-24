@@ -2,7 +2,6 @@
 
 use App\Models\Idea;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Attributes\CollectedBy;
 
 test('it belongs to a user', function () {
     $idea = Idea::factory()->create();
@@ -21,4 +20,12 @@ test('it can have steps', function () {
     ]);
 
     expect($idea->fresh()->steps)->toHaveCount(1);
+});
+
+test('it formats markdown in description', function () {
+    $idea = new Idea([
+        'description' => '# Hello World',
+    ]);
+
+    expect($idea->formatted_description)->toContain('<h1>Hello World</h1>');
 });

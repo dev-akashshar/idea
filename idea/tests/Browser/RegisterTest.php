@@ -1,12 +1,11 @@
 
 <?php
 
-use App\Models\User;
 use Illuminate\Support\Str;
 
 test('register a user', function () {
 
-    $email = 'akash' . Str::random(8) . '@example.com';
+    $email = 'akash'.Str::random(8).'@example.com';
 
     visit('/register')
         ->fill('name', 'Akash Sharma')
@@ -22,7 +21,7 @@ test('register a user', function () {
 });
 test('requires a valid email', function () {
 
-    $email = 'akash' . Str::random(8) . '@example.com';
+    $email = 'akash'.Str::random(8).'@example.com';
 
     visit('/register')
         ->fill('name', 'Akash Sharma')

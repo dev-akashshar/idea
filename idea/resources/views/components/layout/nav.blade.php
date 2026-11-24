@@ -8,10 +8,16 @@
         </div>
         <div class="flex gap-x-5 items-center">
             @auth
+                <a
+                    href="{{ route('profile.edit') }}"
+                    data-test="edit-profile-link"
+                >
+                    Edit Profile
+                </a>
+
                 <form method="POST" action="/logout">
                     @csrf
                     <button data-test="logout-button">Logout</button>
-
                 </form>
             @endauth
 
