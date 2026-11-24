@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Notifications\EmailChangedNotification;
+use App\Notifications\PasswordChangedNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -39,11 +40,20 @@ class ProfileController extends Controller
         $attributes = collect($validated)->filter()->all();
 
         $emailChanged = array_key_exists('email', $attributes) && $attributes['email'] !== $user->email;
+        $passwordChanged = ! empty($validated['password']);
 
         $user->update($attributes);
 
-        if ($emailChanged) {
-            $user->notify(new EmailChangedNotification());
+        try {
+            if ($emailChanged) {
+                $user->notify(new EmailChangedNotification());
+            }
+
+            if ($passwordChanged) {
+                $user->notify(new PasswordChangedNotification());
+            }
+        } catch (\Throwable $e) {
+            report($e);
         }
 
         return to_route('profile.edit')->with('success', 'Profile updated successfully!');

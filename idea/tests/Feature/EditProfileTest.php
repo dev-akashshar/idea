@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use App\Notifications\EmailChangedNotification;
+use App\Notifications\PasswordChangedNotification;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 
@@ -88,4 +89,19 @@ test('a notification is sent when email changes', function () {
         ]);
 
     Notification::assertSentTo($user, EmailChangedNotification::class);
+});
+
+test('a notification is sent when password changes', function () {
+    Notification::fake();
+
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->patch(route('profile.update'), [
+            'name' => $user->name,
+            'email' => $user->email,
+            'password' => 'newpassword123',
+        ]);
+
+    Notification::assertSentTo($user, PasswordChangedNotification::class);
 });
