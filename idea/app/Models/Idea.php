@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\ideaStatus;
+use App\IdeaStatus;
 use Database\Factories\IdeaFactory;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -19,7 +19,7 @@ class Idea extends Model
     use HasFactory;
 
     protected $attributes = [
-        'status' => ideaStatus::PENDING,
+        'status' => IdeaStatus::PENDING,
         'links' => '[]',
     ];
 
@@ -30,7 +30,7 @@ class Idea extends Model
             ->groupBy('status')
             ->pluck('count', 'status');
 
-        return collect(ideaStatus::cases())->mapWithKeys(fn ($status) => [
+        return collect(IdeaStatus::cases())->mapWithKeys(fn ($status) => [
             $status->value => $counts->get($status->value, 0),
         ])->put('all', $user->ideas()->count());
     }
@@ -56,7 +56,7 @@ class Idea extends Model
     {
         return [
             'links' => AsArrayObject::class,
-            'status' => ideaStatus::class,
+            'status' => IdeaStatus::class,
         ];
     }
 }
